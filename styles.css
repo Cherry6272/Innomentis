@@ -18,11 +18,15 @@ body {
   font-family: "Poppins", sans-serif;
   color: var(--text);
   margin: 0;
+  padding: 0;
   background: var(--bg);
+  line-height: 1.6;
 }
 
 html {
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body.modal-open {
@@ -90,9 +94,10 @@ img {
 
 .brand img {
   width: 150px;
-  height: auto;
+  height: 64px;
   max-height: 64px;
   object-fit: contain;
+  display: block;
 }
 
 .nav-links {

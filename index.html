@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0066b3" />
     <title>Innomentis — Edutech Platform for Robotics Based Learning & AI Smart Learning</title>
     <meta name="description" content="Innomentis is an edutech platform offering robotics based learning, AI smart learning and hands-on robotics workshops for children. Book a demo to ignite young minds with STEM and robotics." />
     <meta name="keywords" content="edutech platform, robotics based learning, ai smart learning, robotics workshop, innomentis, robotics for kids, STEM education" />
@@ -14,10 +15,16 @@
     <meta property="og:description" content="Hands-on robotics, AI learning and workshops for young learners. Innomentis builds future-ready skills with fun, project-based STEM programs." />
     <meta property="og:url" content="https://innomentis.in/" />
     <meta property="og:image" content="https://innomentis.in/images/HOME 1.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Innomentis" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Innomentis — Edutech Platform for Robotics & AI" />
     <meta name="twitter:description" content="Hands-on robotics, AI learning and workshops for young learners. Book a demo with Innomentis." />
     <link rel="icon" href="/images/in.png" />
+    <link rel="preload" as="image" href="images/in_logo.png" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -77,8 +84,7 @@
     <nav class="main-nav">
       <div class="container nav-grid">
         <div class="brand">
-          <img src="images/in.png" alt="Innomentis" />
-          <span>Innomentis</span>
+          <img src="images/in_logo.png" alt="Innomentis" width="150" height="64" />
         </div>
         <button class="nav-toggle" type="button" aria-label="Toggle menu">
           <span></span>
@@ -215,7 +221,7 @@
                   <li>Project modules that boost problem solving.</li>
                   <li>Clubs that make creativity and teamwork shine.</li>
                 </ul>
-                <a class="btn tertiary" href="#explore">Explore More</a>
+                <a class="btn tertiary" href="courses.html#course-highlight">Explore More</a>
               </div>
             </article>
 
@@ -231,7 +237,7 @@
                   <li>Interactive tech missions and guided builds.</li>
                   <li>Boosts curiosity, confidence, and creative mindset.</li>
                 </ul>
-                <a class="btn tertiary" href="#explore">Explore More</a>
+                <a class="btn tertiary" href="courses.html#course-online">Explore More</a>
               </div>
             </article>
 
@@ -247,7 +253,7 @@
                   <li>Predict, model, and design smart devices and projects.</li>
                   <li>Certificates plus mentoring towards advanced careers.</li>
                 </ul>
-                <a class="btn tertiary" href="#explore">Explore More</a>
+                <a class="btn tertiary" href="courses.html#course-aiml">Explore More</a>
               </div>
             </article>
           </div>
@@ -390,6 +396,6 @@
       </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
   </body>
 </html>
