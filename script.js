@@ -80,4 +80,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   initNavToggle();
+
+  const enquiryForm = document.getElementById("enquiry-form");
+  if (enquiryForm) {
+    enquiryForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("enquiry-name").value;
+      const phone = document.getElementById("enquiry-phone").value;
+      const message = `Hello, I am interested in your courses. Name: ${name}, Phone: ${phone}`;
+      const whatsappUrl = `https://wa.me/919148206667?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, "_blank");
+    });
+  }
 });
