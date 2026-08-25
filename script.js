@@ -1,95 +1,39 @@
 document.addEventListener("DOMContentLoaded", () => {
   const body = document.body;
-  const DEFAULT_MODAL_SELECTOR = "#enquiry-modal";
-  const MODAL_SELECTOR = ".enquiry-modal, .lead-modal";
 
-  // Add smooth reveal animations for elements
-  const observeElements = () => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }
-      });
-    }, { threshold: 0.1 });
+  /* ==========================================================================
+     1. STICKY NAVBAR SCROLL STATE & MOBILE TOGGLE
+     ========================================================================== */
+  const nav = document.querySelector(".main-nav");
+  const navToggle = document.querySelector(".nav-toggle");
+  const navLinks = document.querySelector(".nav-links");
 
-    document.querySelectorAll('.card, .programme-card, .course-card, .insight-card').forEach(el => {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(20px)';
-      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-      observer.observe(el);
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 30) {
+      nav?.classList.add("scrolled");
+    } else {
+      nav?.classList.remove("scrolled");
+    }
+  });
+
+  if (navToggle && navLinks) {
+    navToggle.addEventListener("click", () => {
+      navToggle.classList.toggle("is-open");
+      navLinks.classList.toggle("mobile-open");
     });
-  };
 
-  // Add parallax effect to hero sections
-  const initParallax = () => {
-    const heroSections = document.querySelectorAll('.hero');
-    
-    window.addEventListener('scroll', () => {
-      const scrolled = window.pageYOffset;
-      
-      heroSections.forEach(hero => {
-        const rect = hero.getBoundingClientRect();
-        if (rect.bottom >= 0 && rect.top <= window.innerHeight) {
-          const speed = 0.5;
-          const yPos = -(scrolled * speed);
-          hero.style.backgroundPositionY = yPos + 'px';
-        }
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navToggle.classList.remove("is-open");
+        navLinks.classList.remove("mobile-open");
       });
     });
-  };
+  }
 
-  // Add hover effects for interactive elements
-  const initHoverEffects = () => {
-    // Add ripple effect to buttons
-    document.querySelectorAll('.btn').forEach(button => {
-      button.addEventListener('mouseenter', function(e) {
-        const ripple = document.createElement('span');
-        ripple.classList.add('ripple');
-        this.appendChild(ripple);
-        
-        const rect = this.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = e.clientX - rect.left - size / 2;
-        const y = e.clientY - rect.top - size / 2;
-        
-        ripple.style.width = ripple.style.height = size + 'px';
-        ripple.style.left = x + 'px';
-        ripple.style.top = y + 'px';
-        
-        setTimeout(() => ripple.remove(), 600);
-      });
-    });
-  };
-
-  // Initialize all enhancements
-  observeElements();
-  initParallax();
-  initHoverEffects();
-
-  const initNavToggle = () => {
-    const navToggles = document.querySelectorAll(".nav-toggle");
-
-    navToggles.forEach((toggle) => {
-      const navGrid = toggle.closest(".nav-grid");
-      const navLinks = navGrid?.querySelector(".nav-links");
-
-      const closeMenu = () => {
-        toggle.classList.remove("is-open");
-        navGrid?.classList.remove("is-open");
-      };
-
-      toggle.addEventListener("click", () => {
-        toggle.classList.toggle("is-open");
-        navGrid?.classList.toggle("is-open");
-      });
-
-      navLinks?.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", closeMenu);
-      });
-    });
-  };
+  /* ==========================================================================
+     2. MODAL SYSTEM (LEAD & ENQUIRY MODALS)
+     ========================================================================== */
+  const DEFAULT_MODAL_SELECTOR = "#lead-modal";
 
   const openModal = (modal) => {
     if (!modal) return;
@@ -105,108 +49,160 @@ document.addEventListener("DOMContentLoaded", () => {
     body.classList.remove("modal-open");
   };
 
-  const modalTriggers = document.querySelectorAll(
-    "[data-modal-target], .link-arrow[href='#']"
-  );
-
-  modalTriggers.forEach((trigger) => {
-    trigger.addEventListener("click", (event) => {
-      event.preventDefault();
+  // Open modal triggers
+  document.querySelectorAll("[data-modal-target]").forEach((trigger) => {
+    trigger.addEventListener("click", (e) => {
+      e.preventDefault();
       const selector = trigger.getAttribute("data-modal-target") || DEFAULT_MODAL_SELECTOR;
       const modal = document.querySelector(selector);
       openModal(modal);
     });
   });
 
+  // Close modal buttons / overlays
   document.querySelectorAll("[data-close]").forEach((closer) => {
     closer.addEventListener("click", () => {
-      const modal = closer.closest(MODAL_SELECTOR);
+      const modal = closer.closest(".lead-modal, .enquiry-modal");
       closeModal(modal);
     });
   });
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      const activeModal = document.querySelector(`${MODAL_SELECTOR}.is-visible`);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      const activeModal = document.querySelector(".lead-modal.is-visible, .enquiry-modal.is-visible");
       if (activeModal) closeModal(activeModal);
     }
   });
 
-  const internalLinks = document.querySelectorAll("a[href^='#']:not([href='#'])");
-  internalLinks.forEach((link) => {
-    link.addEventListener("click", (event) => {
-      const targetSelector = link.getAttribute("href");
-      const target = document.querySelector(targetSelector);
-      if (target) {
-        event.preventDefault();
-        target.scrollIntoView({ behavior: "smooth" });
-      }
-    });
-  });
+  /* ==========================================================================
+     3. INTERACTIVE TECH EXPERIENCE NODES (SENSE, THINK, BUILD, MOVE)
+     ========================================================================== */
+  const techNodeBtns = document.querySelectorAll(".tech-node-btn");
+  const techDisplayTitle = document.getElementById("tech-display-title");
+  const techDisplayDesc = document.getElementById("tech-display-desc");
+  const techDisplayImg = document.getElementById("tech-display-img");
 
-  initNavToggle();
-
-  const enquiryForm = document.getElementById("enquiry-form");
-  if (enquiryForm) {
-    enquiryForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const name = document.getElementById("enquiry-name").value;
-      const phone = document.getElementById("enquiry-phone").value;
-      const message = `Hello, I am interested in your courses. Name: ${name}, Phone: ${phone}`;
-      const whatsappUrl = `https://wa.me/919148206667?text=${encodeURIComponent(message)}`;
-      window.open(whatsappUrl, "_blank");
-      
-      // Show success feedback
-      const button = enquiryForm.querySelector('button[type="submit"]');
-      const originalText = button.textContent;
-      button.textContent = '✓ Sent!';
-      button.style.background = '#0ac950';
-      
-      setTimeout(() => {
-        button.textContent = originalText;
-        button.style.background = '';
-        enquiryForm.reset();
-      }, 2000);
-    });
-  }
-
-  // Handle all form submissions with feedback
-  document.querySelectorAll('form').forEach(form => {
-    if (form.id !== 'enquiry-form') {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const button = form.querySelector('button[type="submit"]');
-        const originalText = button.textContent;
-        button.textContent = '✓ Sent!';
-        button.style.background = '#0ac950';
-        
-        setTimeout(() => {
-          button.textContent = originalText;
-          button.style.background = '';
-          form.reset();
-        }, 2000);
-      });
+  const techNodeData = {
+    sense: {
+      title: "SENSE — Environmental Awareness & Perception",
+      desc: "Robots use ultrasonic, infrared, optical, and touch sensors to gather real-time data from their physical environment, teaching students how machines perceive reality.",
+      image: "images/1.jpg"
+    },
+    think: {
+      title: "THINK — Algorithmic Logic & AI Decision Making",
+      desc: "Microcontrollers and AI algorithms process sensor data in milliseconds. Students program conditional logic, loops, and decision trees to build smart autonomous systems.",
+      image: "images/AI.jpg"
+    },
+    build: {
+      title: "BUILD — Hands-On Hardware & Engineering",
+      desc: "Students assemble modular chassis, gearing systems, circuits, and micro-actuators, transforming raw engineering principles into physical working prototypes.",
+      image: "images/HOME 1.jpg"
+    },
+    move: {
+      title: "MOVE — Actuation & Dynamic Robotics Execution",
+      desc: "Motors and servos execute precise physical movements. Students test kinetic forces, speed control, and navigation algorithms to accomplish complex technological missions.",
+      image: "images/3.jpg"
     }
-  });
+  };
 
-  // Add smooth scroll for all anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
+  techNodeBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      techNodeBtns.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const nodeKey = btn.getAttribute("data-node");
+      if (techNodeData[nodeKey] && techDisplayTitle) {
+        techDisplayTitle.textContent = techNodeData[nodeKey].title;
+        techDisplayDesc.textContent = techNodeData[nodeKey].desc;
+        if (techDisplayImg) techDisplayImg.src = techNodeData[nodeKey].image;
       }
     });
   });
 
-  // Add loading states for images
-  document.querySelectorAll('img').forEach(img => {
-    img.addEventListener('load', function() {
-      this.style.animation = 'fadeIn 0.5s ease';
+  /* ==========================================================================
+     4. FAQ ACCORDION INTERACTIVITY
+     ========================================================================== */
+  const faqQuestions = document.querySelectorAll(".faq-question");
+
+  faqQuestions.forEach((q) => {
+    q.addEventListener("click", () => {
+      const faqItem = q.closest(".faq-item");
+      const isActive = faqItem.classList.contains("active");
+
+      // Close all other items
+      document.querySelectorAll(".faq-item").forEach((item) => {
+        item.classList.remove("active");
+      });
+
+      if (!isActive) {
+        faqItem.classList.add("active");
+      }
     });
+  });
+
+  /* ==========================================================================
+     5. FORM SUBMISSION WITH WHATSAPP INTEGRATION & FEEDBACK
+     ========================================================================== */
+  document.querySelectorAll("form").forEach((form) => {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      // Collect field values if present
+      const nameInput = form.querySelector("input[type='text'], input[placeholder*='Name']");
+      const phoneInput = form.querySelector("input[type='tel'], input[placeholder*='Phone']");
+      const nameVal = nameInput ? nameInput.value : "Parent/Student";
+      const phoneVal = phoneInput ? phoneInput.value : "";
+
+      const msg = `Hello Innomentis Team, I would like to book a demo/enquire about your robotics & AI programs. Name: ${nameVal}, Contact: ${phoneVal}`;
+      const whatsappUrl = `https://wa.me/919148206667?text=${encodeURIComponent(msg)}`;
+
+      // Open WhatsApp in new tab
+      window.open(whatsappUrl, "_blank");
+
+      // Submit feedback button state
+      const submitBtn = form.querySelector("button[type='submit']");
+      if (submitBtn) {
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = "✓ Lead Submitted!";
+        submitBtn.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)";
+
+        setTimeout(() => {
+          submitBtn.textContent = originalText;
+          submitBtn.style.background = "";
+          form.reset();
+          const activeModal = form.closest(".lead-modal, .enquiry-modal");
+          if (activeModal) closeModal(activeModal);
+        }, 2200);
+      }
+    });
+  });
+
+  /* ==========================================================================
+     6. INTERSECTION OBSERVER FOR SCROLL REVEALS
+     ========================================================================== */
+  const revealTargets = document.querySelectorAll(
+    ".pillar-card, .program-editorial-card, .value-card, .gallery-item, .journey-step, .stat-box, .course-card, .insight-card, .tier-card, .aiml-card"
+  );
+
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: "0px 0px -40px 0px"
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = "1";
+        entry.target.style.transform = "translateY(0)";
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  revealTargets.forEach((el) => {
+    el.style.opacity = "0";
+    el.style.transform = "translateY(24px)";
+    el.style.transition = "opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+    observer.observe(el);
   });
 });
