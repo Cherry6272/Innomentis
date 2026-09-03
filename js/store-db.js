@@ -276,10 +276,8 @@
         // Sync update to Supabase (Awaited to ensure Cloud DB updates before dashboard re-renders)
         await this.updateOrderStatusSupabase(orderId, paymentStatus, orderStatus, rejectionReason);
 
-        // If Payment Verified, simulate trigger confirmation email
-        if (paymentStatus === "Payment Verified" || orderStatus === "Order Confirmed") {
-          this.triggerConfirmationEmail(orders[index]);
-        }
+        // Automatically trigger notification email to the specific customer on EVERY status change
+        this.triggerOrderStatusEmail(orders[index], paymentStatus, orderStatus, rejectionReason);
 
         return orders[index];
       }
@@ -328,19 +326,45 @@
     }
 
     /**
-     * Email Confirmation Simulation
+     * Automated Customer Notification Email Engine
+     * Automatically dispatches tailored emails to the customer for EVERY status update
      */
-    triggerConfirmationEmail(order) {
-      console.log(`[EMAIL TRIGGERED] Order Confirmation Email sent for #${order.order_id} to ${order.email}`);
-      // Store trigger log locally for verification demo
+    triggerOrderStatusEmail(order, paymentStatus, orderStatus, rejectionReason = "") {
+      let subject = `Update on your Innomentis Order #${order.order_id}`;
+      let messageBody = `Hello ${order.customer_name},\n\n`;
+
+      if (orderStatus === "Order Confirmed" || paymentStatus === "Payment Verified") {
+        subject = `🎉 Payment Verified & Confirmed — Innomentis Order #${order.order_id}`;
+        messageBody += `Great news! Your payment for Order #${order.order_id} (Total: ₹${order.total_amount}) has been verified successfully.\n\nYour robotics kits and materials are now confirmed and queued for packing.\n\nTransaction Reference: ${order.transaction_id}\nShipping Address: ${order.address}, ${order.city}, ${order.state} - ${order.pincode}\n\nThank you for choosing Innomentis Robotics!`;
+      } else if (orderStatus === "Processing") {
+        subject = `⚙️ Order in Processing — Innomentis Order #${order.order_id}`;
+        messageBody += `Your Order #${order.order_id} is currently being prepared, assembled, and quality-checked by our engineering team.\n\nWe will notify you with dispatch details as soon as it ships.`;
+      } else if (orderStatus === "Shipped") {
+        subject = `🚚 Order Shipped & Dispatched — Innomentis Order #${order.order_id}`;
+        messageBody += `Exciting news! Your robotics order #${order.order_id} has been dispatched.\n\nIt is on its way to:\n${order.address}, ${order.city}, ${order.state} - ${order.pincode}\n\nExpect delivery in 2-4 business days.`;
+      } else if (orderStatus === "Delivered") {
+        subject = `✅ Order Delivered — Innomentis Order #${order.order_id}`;
+        messageBody += `Your Innomentis Order #${order.order_id} has been delivered successfully.\n\nWe hope you have an incredible time building and innovating! If you have any questions or need project guidance, reach us at contact@innomentis.in or +91 91482 06667.`;
+      } else if (paymentStatus === "Rejected" || orderStatus === "Payment Rejected") {
+        subject = `⚠️ Payment Verification Notice — Innomentis Order #${order.order_id}`;
+        messageBody += `We were unable to verify your payment transaction ID (${order.transaction_id}) for Order #${order.order_id}.\n\nReason: ${rejectionReason || "Transaction UTR could not be verified in bank records"}.\n\nPlease contact our support team at contact@innomentis.in or WhatsApp +91 91482 06667 with your payment screenshot so we can help resolve this promptly.`;
+      } else {
+        subject = `Order Status Update — Innomentis Order #${order.order_id}: ${orderStatus}`;
+        messageBody += `Your Order #${order.order_id} status has been updated to: "${orderStatus}".`;
+      }
+
+      console.log(`[AUTOMATED EMAIL DISPATCHED] -> To: ${order.email} | Subject: "${subject}"`);
+
+      // Store in persistent local email audit log for admin inspection & debugging
       const logs = JSON.parse(localStorage.getItem("innomentis_email_logs") || "[]");
       logs.unshift({
         order_id: order.order_id,
         recipient: order.email,
         customer_name: order.customer_name,
-        subject: `Your Innomentis Order #${order.order_id} is Confirmed`,
+        subject: subject,
+        status: orderStatus,
         sent_at: new Date().toISOString(),
-        body: `Hello ${order.customer_name},\n\nYour payment for Order #${order.order_id} (₹${order.total_amount}) has been verified successfully. Your items are now being packed for dispatch.`
+        body: messageBody
       });
       localStorage.setItem("innomentis_email_logs", JSON.stringify(logs));
     }

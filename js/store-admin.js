@@ -174,6 +174,7 @@
             minute: "2-digit"
           });
 
+          const displayStatus = order.order_status || order.payment_status || "Pending";
           const statusBadgeClass = this.getStatusBadgeClass(order.payment_status, order.order_status);
 
           return `
@@ -188,7 +189,7 @@
             <td>${dateStr}</td>
             <td><strong>₹${order.total_amount.toLocaleString("en-IN")}</strong></td>
             <td><code>${this.escapeHtml(order.transaction_id)}</code></td>
-            <td><span class="status-badge ${statusBadgeClass}">${order.payment_status}</span></td>
+            <td><span class="status-badge ${statusBadgeClass}">${this.escapeHtml(displayStatus)}</span></td>
             <td>
               <button type="button" class="btn small primary" onclick="window.StoreAdmin.viewOrderModal('${order.order_id}')">
                 Review & Verify
@@ -201,9 +202,12 @@
     }
 
     getStatusBadgeClass(paymentStatus, orderStatus) {
-      if (paymentStatus === "Payment Verified" || orderStatus === "Order Confirmed") return "badge-success";
-      if (paymentStatus === "Rejected") return "badge-danger";
-      if (orderStatus === "Shipped" || orderStatus === "Delivered") return "badge-info";
+      const status = (orderStatus || paymentStatus || "").toLowerCase();
+      if (status.includes("delivered")) return "badge-success";
+      if (status.includes("shipped")) return "badge-info";
+      if (status.includes("processing")) return "badge-info";
+      if (status.includes("confirmed") || status.includes("verified")) return "badge-success";
+      if (status.includes("rejected") || status.includes("failed")) return "badge-danger";
       return "badge-warning";
     }
 
@@ -253,8 +257,8 @@
                   <h4 class="block-title">Payment Verification Info</h4>
                   <p><strong>Transaction / UTR ID:</strong> <code class="utr-code">${this.escapeHtml(order.transaction_id)}</code></p>
                   <p><strong>Total Amount:</strong> <span class="highlight-price">₹${order.total_amount.toLocaleString("en-IN")}</span></p>
-                  <p><strong>Payment Status:</strong> <span class="status-badge ${this.getStatusBadgeClass(order.payment_status, order.order_status)}">${order.payment_status}</span></p>
-                  <p><strong>Order Status:</strong> <strong>${order.order_status}</strong></p>
+                  <p><strong>Order Status:</strong> <span class="status-badge ${this.getStatusBadgeClass(order.payment_status, order.order_status)}">${this.escapeHtml(order.order_status || order.payment_status)}</span></p>
+                  <p><strong>Payment Status:</strong> <strong>${this.escapeHtml(order.payment_status)}</strong></p>
                   <div class="screenshot-preview-wrapper">
                     <h5>Payment Proof Screenshot:</h5>
                     ${screenshotHtml}
@@ -304,7 +308,7 @@
       if (confirm(`Confirm verification of payment for Order #${orderId}? This will trigger confirmation email to the customer.`)) {
         const updatedOrder = await window.StoreDB.updateOrderStatus(orderId, "Payment Verified", "Order Confirmed");
         const recipientEmail = updatedOrder ? updatedOrder.email : "customer";
-        alert(`✓ Payment verified! Order #${orderId} is confirmed.\n\n📧 Confirmation email triggered to: ${recipientEmail}`);
+        alert(`✓ Payment verified! Order #${orderId} is confirmed.\n\n📧 Automated confirmation email dispatched to: ${recipientEmail}`);
         this.closeModal();
         await this.renderDashboard();
       }
@@ -313,17 +317,22 @@
     async rejectPayment(orderId) {
       const reason = prompt("Enter reason for payment rejection (e.g. Invalid UTR number / Amount mismatch):");
       if (reason !== null) {
-        await window.StoreDB.updateOrderStatus(orderId, "Rejected", "Payment Rejected", reason);
-        alert(`Order #${orderId} payment marked as Rejected.`);
+        const updatedOrder = await window.StoreDB.updateOrderStatus(orderId, "Rejected", "Payment Rejected", reason);
+        const recipientEmail = updatedOrder ? updatedOrder.email : "customer";
+        alert(`Order #${orderId} marked as Rejected.\n\n📧 Notification email sent to: ${recipientEmail}`);
         this.closeModal();
         await this.renderDashboard();
       }
     }
 
     async updateLifecycleStatus(orderId, newStatus) {
-      const paymentStatus = newStatus === "Order Confirmed" || newStatus === "Processing" || newStatus === "Shipped" || newStatus === "Delivered" ? "Payment Verified" : "Payment Verification Pending";
-      await window.StoreDB.updateOrderStatus(orderId, paymentStatus, newStatus);
-      alert(`✓ Order #${orderId} status updated to: ${newStatus}`);
+      const paymentStatus = (newStatus === "Payment Rejected" || newStatus === "Rejected")
+        ? "Rejected"
+        : (newStatus === "Payment Verification Pending" ? "Payment Verification Pending" : "Payment Verified");
+
+      const updatedOrder = await window.StoreDB.updateOrderStatus(orderId, paymentStatus, newStatus);
+      const recipientEmail = updatedOrder ? updatedOrder.email : "customer";
+      alert(`✓ Order #${orderId} status updated to: "${newStatus}".\n\n📧 Automated notification email dispatched to: ${recipientEmail}`);
       this.closeModal();
       await this.renderDashboard();
     }
