@@ -99,10 +99,14 @@
         <li><a href="index.html" class="active">Home</a></li>
         <li><a href="about.html">About Us</a></li>
         <li><a href="courses.html">Courses &amp; Pathways</a></li>
+        <li><a href="store.html" class="nav-store-link">Robotics Store <span class="store-badge">NEW</span></a></li>
         <li><a href="contact.html">Contact Us</a></li>
       </ul>
 
       <div class="nav-actions">
+        <button class="btn header-cart-btn" type="button" onclick="window.StoreCart &amp;&amp; window.StoreCart.openCartDrawer()">
+          🛒 Cart <span class="cart-count-badge">0</span>
+        </button>
         <button class="btn primary" type="button" data-modal-target="#lead-modal">
           Book a Demo
         </button>
@@ -773,6 +777,7 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="about.html">About Us</a></li>
           <li><a href="courses.html">Courses &amp; Pathways</a></li>
+          <li><a href="store.html">Robotics Store</a></li>
           <li><a href="contact.html">Contact Us</a></li>
           <li><a href="images/RTC - brochure.pdf" download>Download Brochure</a></li>
         </ul>
@@ -793,6 +798,7 @@
     <div class="container footer-bottom">
       <p>© 2025 Innomentis Robotics School. All Rights Reserved.</p>
       <div style="display: flex; gap: 1.5rem;">
+        <a href="admin.html" style="color: var(--yellow); font-weight: 600;">Admin Login 🔑</a>
         <a href="contact.html">Contact Support</a>
         <a href="#home">Back to Top ↑</a>
       </div>
@@ -800,5 +806,8 @@
   </footer>
 
   <script src="script.js" defer></script>
+  <script src="js/products-data.js" defer></script>
+  <script src="js/store-db.js" defer></script>
+  <script src="js/store-cart.js" defer></script>
 </body>
 </html>

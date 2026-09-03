@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0066b3" />
+  <title>Order Submitted — Innomentis Store</title>
+  <link rel="icon" href="images/in.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Top Utility Bar -->
+  <header class="top-bar">
+    <div class="container">
+      <div class="top-info">
+        <div class="top-info-item">
+          <span>🕒 MON – SAT | 9:00 AM to 6:00 PM</span>
+        </div>
+      </div>
+      <div class="top-socials">
+        <a href="tel:+919148206667">📞 +91 91482 06667</a>
+        <a href="mailto:contact@innomentis.in">✉️ contact@innomentis.in</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="main-nav">
+    <div class="container nav-grid">
+      <a href="index.html" class="brand">
+        <img src="images/in_logo.png" alt="Innomentis Logo" width="150" height="52" />
+      </a>
+      <div class="nav-actions">
+        <a href="store.html" class="btn primary">Return to Store</a>
+      </div>
+    </div>
+  </nav>
+
+  <main style="padding: 4rem 0 6rem 0; background: var(--bg-page);">
+    <div class="container" style="max-width: 800px; margin: 0 auto;">
+      
+      <div id="confirmation-card-wrapper">
+        <div class="loading-spinner">Fetching order status...</div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <p>© 2025 Innomentis Robotics School. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/products-data.js" defer></script>
+  <script src="js/store-db.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      const orderId = params.get("id") || "INM-1024";
+
+      const order = window.StoreDB.getOrderById(orderId);
+      const wrapper = document.getElementById("confirmation-card-wrapper");
+
+      if (!order) {
+        wrapper.innerHTML = `
+          <div class="confirmation-card" style="text-align: center;">
+            <h2>Order Not Found</h2>
+            <p>We could not locate an order matching ID <strong>#${orderId}</strong>.</p>
+            <a href="store.html" class="btn primary" style="margin-top: 1.5rem;">Explore Robotics Store</a>
+          </div>
+        `;
+        return;
+      }
+
+      const isVerified = order.payment_status === "Payment Verified" || order.order_status === "Order Confirmed";
+      const isRejected = order.payment_status === "Rejected";
+
+      let statusNotice = `
+        <div class="notice-box notice-warning">
+          <span class="notice-icon">⏳</span>
+          <div>
+            <h4>Payment Verification Pending</h4>
+            <p>Your payment details have been submitted successfully and are currently being verified by the Innomentis team. Once your payment is verified, you will receive an order confirmation by email.</p>
+          </div>
+        </div>
+      `;
+
+      if (isVerified) {
+        statusNotice = `
+          <div class="notice-box notice-success">
+            <span class="notice-icon">✓</span>
+            <div>
+              <h4>Payment Verified &amp; Order Confirmed!</h4>
+              <p>Your payment has been successfully verified by the Innomentis team. Your order is now being processed for dispatch.</p>
+            </div>
+          </div>
+        `;
+      } else if (isRejected) {
+        statusNotice = `
+          <div class="notice-box notice-danger">
+            <span class="notice-icon">⚠️</span>
+            <div>
+              <h4>Payment Verification Unsuccessful</h4>
+              <p>We could not verify your payment transaction ID. ${order.rejection_reason ? 'Reason: ' + order.rejection_reason : 'Please contact Innomentis support.'}</p>
+            </div>
+          </div>
+        `;
+      }
+
+      const itemsHtml = order.items.map(item => `
+        <div class="conf-item-row">
+          <div>
+            <strong>${item.product_name}</strong>
+            <span class="qty-span">Qty: ${item.quantity} × ₹${item.price.toLocaleString('en-IN')}</span>
+          </div>
+          <strong>₹${(item.quantity * item.price).toLocaleString('en-IN')}</strong>
+        </div>
+      `).join("");
+
+      const waMsg = encodeURIComponent(
+        `Hello Innomentis! I have submitted Order #${order.order_id} for Student: ${order.customer_name}.\nTotal Amount: ₹${order.total_amount.toLocaleString('en-IN')}\nTransaction UTR: ${order.transaction_id}\nSchool: ${order.school || 'N/A'}\n\nPlease verify my payment.`
+      );
+      const waUrl = `https://wa.me/919148206667?text=${waMsg}`;
+
+      wrapper.innerHTML = `
+        <div class="confirmation-card">
+          <div class="confirmation-header">
+            <div class="success-ring">📋</div>
+            <h2>Order Submitted Successfully</h2>
+            <div class="order-id-badge">Order Reference: <strong>#${order.order_id}</strong></div>
+          </div>
+
+          ${statusNotice}
+
+          <div class="conf-section-grid" style="margin-top: 2rem;">
+            <div class="conf-info-box">
+              <h4>Student Information</h4>
+              <p><strong>Student Name:</strong> ${order.customer_name}</p>
+              <p><strong>Parent/Guardian:</strong> ${order.guardian_name || 'N/A'}</p>
+              <p><strong>School:</strong> ${order.school || 'N/A'}</p>
+              <p><strong>Email:</strong> ${order.email}</p>
+              <p><strong>Phone:</strong> ${order.phone}</p>
+            </div>
+
+            <div class="conf-info-box">
+              <h4>Payment Details</h4>
+              <p><strong>Transaction UTR ID:</strong> <code>${order.transaction_id}</code></p>
+              <p><strong>Payment Method:</strong> UPI Transfer</p>
+              <p><strong>Submission Date:</strong> ${new Date(order.created_at).toLocaleString('en-IN')}</p>
+              <p><strong>Total Amount:</strong> <span class="price-highlight">₹${order.total_amount.toLocaleString('en-IN')}</span></p>
+            </div>
+          </div>
+
+          <div class="conf-info-box" style="margin-top: 1.5rem;">
+            <h4>Delivery Address</h4>
+            <p>${order.address}, ${order.city}, ${order.state} - ${order.pincode}</p>
+          </div>
+
+          <div class="conf-items-box" style="margin-top: 1.5rem;">
+            <h4>Ordered Items</h4>
+            ${itemsHtml}
+            <div class="conf-total-row">
+              <span>Total Paid:</span>
+              <span>₹${order.total_amount.toLocaleString('en-IN')}</span>
+            </div>
+          </div>
+
+          <div class="conf-actions-row" style="margin-top: 2.5rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+            <a href="${waUrl}" target="_blank" class="btn" style="background: #25D366; color: white; font-weight: 700; border: none; padding: 0.8rem 1.5rem; font-size: 1.05rem; display: inline-flex; align-items: center; gap: 0.5rem; border-radius: var(--radius-md);">
+              💬 Send Details on WhatsApp (+91 91482 06667)
+            </a>
+            <a href="store.html" class="btn primary">Continue Shopping</a>
+            <button onclick="window.print()" class="btn secondary">Print Receipt 🖨️</button>
+          </div>
+        </div>
+      `;
+    });
+  </script>
+</body>
+</html>

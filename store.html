@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0066b3" />
+  <title>Robotics & STEM E-Store — Innomentis</title>
+  <meta name="description"
+    content="Explore educational robotics kits, sensors, motors, microcontrollers, and electronic components for students, schools, and makers at Innomentis Robotics Store." />
+  <meta name="keywords"
+    content="robotics store, robotics kits for kids, Arduino sensors, motor drivers, STEM educational kits, Innomentis store" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://innomentis.in/store.html" />
+
+  <link rel="icon" href="images/in.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Top Utility Bar -->
+  <header class="top-bar">
+    <div class="container">
+      <div class="top-info">
+        <div class="top-info-item">
+          <span>🕒 MON – SAT | 9:00 AM to 6:00 PM</span>
+        </div>
+        <div class="top-info-item">
+          <span>📍 Head Office: Yelahanka, Bengaluru | Branch: Meerut, UP</span>
+        </div>
+      </div>
+      <div class="top-socials">
+        <a href="tel:+919148206667">📞 +91 91482 06667</a>
+        <a href="mailto:contact@innomentis.in">✉️ contact@innomentis.in</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Sticky Navigation -->
+  <nav class="main-nav">
+    <div class="container nav-grid">
+      <a href="index.html" class="brand" aria-label="Innomentis Home">
+        <img src="images/in_logo.png" alt="Innomentis Logo" width="150" height="52" />
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="courses.html">Courses &amp; Pathways</a></li>
+        <li><a href="store.html" class="active nav-store-link">Robotics Store <span class="store-badge">NEW</span></a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="btn header-cart-btn" type="button" onclick="window.StoreCart &amp;&amp; window.StoreCart.openCartDrawer()">
+          🛒 Cart <span class="cart-count-badge">0</span>
+        </button>
+        <button class="nav-toggle" type="button" aria-label="Toggle Navigation Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- STORE HERO SECTION -->
+    <section class="hero hero--store">
+      <div class="hero-circuit-bg"></div>
+      <div class="container" style="text-align: center; max-width: 860px; margin: 0 auto; position: relative; z-index: 2;">
+        <div class="eyebrow eyebrow--yellow">Learn • Build • Experiment • Innovate</div>
+        <h1 style="font-size: clamp(2.4rem, 4vw, 3.6rem); margin-bottom: 1.25rem;">
+          Build. Experiment.<br />
+          <span>Innovate with Innomentis</span>
+        </h1>
+        <p class="hero-subtitle" style="margin: 0 auto 2rem auto;">
+          Explore robotics kits, electronic components, sensors, and accessories designed to help students turn creative ideas into working physical projects.
+        </p>
+
+        <div class="hero-actions" style="justify-content: center; gap: 1rem;">
+          <a href="#catalogue" class="btn primary">
+            Explore Products ↓
+          </a>
+          <button type="button" class="btn secondary" onclick="filterByCategory('Robotics Kits')">
+            Explore Robotics Kits
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCT CATALOGUE SECTION -->
+    <section id="catalogue" class="catalogue-section">
+      <div class="container">
+        
+        <!-- Category Filter Pills & Search Control Bar -->
+        <div class="catalogue-toolbar">
+          <div class="category-pills-scroll" id="category-pills">
+            <button class="cat-pill active" data-category="All">All Products</button>
+            <button class="cat-pill" data-category="Robotics Kits">Robotics Kits</button>
+            <button class="cat-pill" data-category="Sensors &amp; Modules">Sensors &amp; Modules</button>
+            <button class="cat-pill" data-category="Motors &amp; Motion">Motors &amp; Motion</button>
+            <button class="cat-pill" data-category="Electronics">Electronics</button>
+            <button class="cat-pill" data-category="Accessories">Accessories</button>
+          </div>
+
+          <div class="search-sort-bar">
+            <div class="search-input-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="store-search-input" placeholder="Search kits, sensors, motors, SKU..." aria-label="Search Store Products" />
+            </div>
+
+            <div class="sort-select-box">
+              <label for="store-sort-select">Sort By:</label>
+              <select id="store-sort-select" aria-label="Sort Products">
+                <option value="featured">Featured</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="name-az">Name: A to Z</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Filter Indicator -->
+        <div class="catalogue-results-meta" id="results-meta">
+          Showing <strong id="product-count-display">0</strong> products
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="products-grid-container">
+          <!-- Dynamically populated by JavaScript -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- WHY INNOMENTIS STORE BANNER -->
+    <section style="padding: 4.5rem 0; background: var(--bg-surface); border-top: 1px solid var(--bg-subtle);">
+      <div class="container">
+        <div class="section-header" style="text-align: center; max-width: 700px; margin: 0 auto 3rem auto;">
+          <div class="eyebrow">The Innomentis Guarantee</div>
+          <h2>Designed for Hands-On Learning</h2>
+          <p>Curated specifically for students, schools, and STEM enthusiasts across India.</p>
+        </div>
+
+        <div class="parent-value-grid">
+          <div class="value-card">
+            <div class="value-icon">🧩</div>
+            <h3>100% Curriculum Tested</h3>
+            <p>Every component is tested for safety, durability, and seamless compatibility with Arduino and Scratch platforms.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">📘</div>
+            <h3>Project Guides Included</h3>
+            <p>Robotics kits come complete with illustrated manuals, code samples, and step-by-step assembly guides.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">⚡</div>
+            <h3>Direct UPI Verification</h3>
+            <p>Fast and transparent manual UPI payment verification with instant confirmation notifications.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">🚚</div>
+            <h3>Pan-India Delivery</h3>
+            <p>Direct shipping to homes, schools, and institutions with protective anti-static hardware packaging.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- SITE FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="images/in_logo.png" alt="Innomentis Logo" width="160" />
+        <p>
+          Experiential STEM and robotics education enabling the next generation to innovate, build, and lead through technology.
+        </p>
+        <div style="display: flex; gap: 1rem;">
+          <a href="tel:+919148206667" style="color: var(--yellow); font-weight: 600; font-size: 0.9rem;">📞 +91 91482 06667</a>
+        </div>
+      </div>
+
+      <div class="footer-column">
+        <h4>Our Offices</h4>
+        <div class="office-info">
+          <h5>Head Office (Bengaluru)</h5>
+          <p>
+            No 15/3, Mittaganahalli Main Road,<br />
+            Near Jewel Garden, Yelahanka 560064
+          </p>
+        </div>
+        <div class="office-info">
+          <h5>Branch Office (Meerut)</h5>
+          <p>
+            No. 12, Kaveri Complex, PL Sharma Road,<br />
+            Begumpul, Meerut, UP - 250001
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="courses.html">Courses &amp; Pathways</a></li>
+          <li><a href="store.html">Robotics Store</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="admin.html">Store Admin Portal</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Robotics Store Categories</h4>
+        <ul>
+          <li><a href="#" onclick="filterByCategory('Robotics Kits'); return false;">Robotics Kits</a></li>
+          <li><a href="#" onclick="filterByCategory('Sensors &amp; Modules'); return false;">Sensors &amp; Modules</a></li>
+          <li><a href="#" onclick="filterByCategory('Motors &amp; Motion'); return false;">Motors &amp; Motion</a></li>
+          <li><a href="#" onclick="filterByCategory('Electronics'); return false;">Microcontrollers &amp; Boards</a></li>
+          <li><a href="#" onclick="filterByCategory('Accessories'); return false;">Robotics Accessories</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© 2025 Innomentis Robotics School. All Rights Reserved.</p>
+      <div style="display: flex; gap: 1.5rem;">
+        <a href="admin.html" style="color: var(--yellow); font-weight: 600;">Admin Login 🔑</a>
+        <a href="#top">Back to Top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="script.js" defer></script>
+  <script src="js/products-data.js" defer></script>
+  <script src="js/store-db.js" defer></script>
+  <script src="js/store-cart.js" defer></script>
+
+  <!-- Inline Catalogue Rendering Script -->
+  <script>
+    let currentCategory = "All";
+    let currentSearch = "";
+    let currentSort = "featured";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Handle URL query parameters (e.g. store.html?cat=Robotics+Kits)
+      const params = new URLSearchParams(window.location.search);
+      if (params.has("cat")) {
+        currentCategory = params.get("cat");
+      }
+      if (params.has("q")) {
+        currentSearch = params.get("q");
+        document.getElementById("store-search-input").value = currentSearch;
+      }
+
+      bindStoreCatalogueEvents();
+      renderProducts();
+    });
+
+    function filterByCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll(".cat-pill").forEach(pill => {
+        if (pill.getAttribute("data-category") === cat) {
+          pill.classList.add("active");
+        } else {
+          pill.classList.remove("active");
+        }
+      });
+      renderProducts();
+
+      const catalogueSec = document.getElementById("catalogue");
+      if (catalogueSec) catalogueSec.scrollIntoView({ behavior: "smooth" });
+    }
+
+    function bindStoreCatalogueEvents() {
+      // Category Pills
+      document.querySelectorAll(".cat-pill").forEach(pill => {
+        pill.addEventListener("click", () => {
+          document.querySelectorAll(".cat-pill").forEach(p => p.classList.remove("active"));
+          pill.classList.add("active");
+          currentCategory = pill.getAttribute("data-category");
+          renderProducts();
+        });
+      });
+
+      // Search Input
+      const searchInput = document.getElementById("store-search-input");
+      if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+          currentSearch = e.target.value;
+          renderProducts();
+        });
+      }
+
+      // Sort Select
+      const sortSelect = document.getElementById("store-sort-select");
+      if (sortSelect) {
+        sortSelect.addEventListener("change", (e) => {
+          currentSort = e.target.value;
+          renderProducts();
+        });
+      }
+    }
+
+    function renderProducts() {
+      const container = document.getElementById("products-grid-container");
+      const countDisplay = document.getElementById("product-count-display");
+      if (!container) return;
+
+      const products = window.StoreDB.filterProducts({
+        category: currentCategory,
+        query: currentSearch,
+        sort: currentSort
+      });
+
+      if (countDisplay) countDisplay.textContent = products.length;
+
+      if (products.length === 0) {
+        container.innerHTML = `
+          <div class="catalogue-empty-state">
+            <div class="empty-icon">🔍</div>
+            <h3>No products found</h3>
+            <p>Try searching for a different keyword or choosing another category.</p>
+            <button class="btn secondary" onclick="filterByCategory('All')">Clear Filters</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = products.map(product => {
+        const isOutOfStock = product.availability === "Out of Stock";
+        const stockBadgeClass = product.availability === "In Stock" ? "stock-in" : (product.availability === "Low Stock" ? "stock-low" : "stock-out");
+
+        return `
+          <article class="product-card">
+            <div class="product-card-image-wrap">
+              <img src="${product.image}" alt="${product.name}" loading="lazy" class="product-card-img" />
+              <span class="product-stock-badge ${stockBadgeClass}">${product.availability}</span>
+              <span class="product-sku-tag">${product.sku}</span>
+            </div>
+
+            <div class="product-card-content">
+              <div class="product-card-category">${product.category}</div>
+              <h3 class="product-card-title">
+                <a href="product.html?id=${product.slug}">${product.name}</a>
+              </h3>
+              <p class="product-card-desc">${product.short_description}</p>
+              
+              <div class="product-card-footer">
+                <div class="product-price">
+                  <span class="price-currency">₹</span>${product.price.toLocaleString('en-IN')}
+                </div>
+                <div class="product-actions-group">
+                  <a href="product.html?id=${product.slug}" class="btn-product-details">
+                    View Details
+                  </a>
+                  <button type="button" 
+                          class="btn primary btn-add-cart ${isOutOfStock ? 'disabled' : ''}" 
+                          ${isOutOfStock ? 'disabled' : ''}
+                          onclick="window.StoreCart.addItem('${product.id}')">
+                    ${isOutOfStock ? 'Out of Stock' : '+ Add'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+  </script>
+</body>
+</html>

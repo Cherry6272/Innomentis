@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#02375a" />
+  <title>Admin Dashboard — Innomentis Store</title>
+  <link rel="icon" href="images/in.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body class="admin-body">
+
+  <div id="admin-dashboard-app">
+    
+    <!-- PASSCODE AUTHENTICATION OVERLAY -->
+    <div id="admin-login-overlay" class="admin-login-overlay">
+      <div class="admin-login-card">
+        <div class="login-brand">
+          <img src="images/in_logo.png" alt="Innomentis Logo" width="160" />
+          <h3>Store Admin Access</h3>
+          <p>Please enter the administrative passcode to access order verifications and store controls.</p>
+        </div>
+
+        <form id="admin-login-form">
+          <label>
+            <span>Admin Passcode</span>
+            <input type="password" id="admin_passcode" placeholder="Enter Passcode (Default: innomentis2025)" required autofocus />
+          </label>
+          
+          <div id="login-error-msg" class="login-error" style="display: none;"></div>
+
+          <button type="submit" class="btn primary" style="width: 100%; margin-top: 1rem;">
+            Unlock Admin Dashboard →
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- MAIN ADMIN DASHBOARD CONTENT -->
+    <div id="admin-main-content" style="display: none;">
+      
+      <!-- Top Admin Header Bar -->
+      <header class="admin-top-bar">
+        <div class="container admin-header-grid">
+          <div class="admin-brand-title">
+            <img src="images/in_logo.png" alt="Innomentis Logo" width="140" />
+            <span class="admin-badge">Admin Dashboard</span>
+          </div>
+
+          <div class="admin-user-info">
+            <span>Logged in as <strong>Innomentis Admin</strong></span>
+            <button type="button" id="admin-logout-btn" class="btn small secondary">Logout 🚪</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="admin-main-wrapper">
+        <div class="container">
+          
+          <!-- Stat Counters Row -->
+          <div class="admin-stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">📦</div>
+              <div class="stat-data">
+                <h3 id="stat-total-orders">0</h3>
+                <span>Total Orders</span>
+              </div>
+            </div>
+
+            <div class="stat-card stat-pending">
+              <div class="stat-icon">⏳</div>
+              <div class="stat-data">
+                <h3 id="stat-pending-verification">0</h3>
+                <span>Pending Verification</span>
+              </div>
+            </div>
+
+            <div class="stat-card stat-confirmed">
+              <div class="stat-icon">✓</div>
+              <div class="stat-data">
+                <h3 id="stat-confirmed-orders">0</h3>
+                <span>Verified &amp; Confirmed</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">🚚</div>
+              <div class="stat-data">
+                <h3 id="stat-shipped-orders">0</h3>
+                <span>Shipped / Delivered</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation Tabs -->
+          <div class="admin-tabs-bar">
+            <button class="admin-tab-btn active" data-tab="tab-orders">📋 Orders &amp; Verifications</button>
+            <button class="admin-tab-btn" data-tab="tab-inventory">📦 Inventory &amp; Stock</button>
+            <button class="admin-tab-btn" data-tab="tab-settings">⚙️ UPI &amp; Store Settings</button>
+          </div>
+
+          <!-- TAB 1: ORDERS & VERIFICATIONS -->
+          <div id="tab-orders" class="admin-tab-content active">
+            
+            <div class="table-controls-bar">
+              <div class="search-box">
+                <input type="text" id="admin-order-search" placeholder="Search Order ID, Customer, UTR number, Email..." />
+              </div>
+
+              <div class="filter-box">
+                <label>Filter Status:</label>
+                <select id="admin-status-filter">
+                  <option value="All">All Orders</option>
+                  <option value="Payment Verification Pending">Pending Verification</option>
+                  <option value="Payment Verified">Payment Verified</option>
+                  <option value="Order Confirmed">Order Confirmed</option>
+                  <option value="Processing">Processing</option>
+                  <option value="Shipped">Shipped</option>
+                  <option value="Delivered">Delivered</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="admin-table-wrapper">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>UTR / Trans ID</th>
+                    <th>Payment Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-orders-table-body">
+                  <!-- Rendered dynamically by StoreAdmin -->
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+          <!-- TAB 2: INVENTORY & STOCK -->
+          <div id="tab-inventory" class="admin-tab-content">
+            <div class="admin-table-wrapper">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>SKU</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Availability Status</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-inventory-table-body">
+                  <!-- Rendered dynamically by StoreAdmin -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 3: UPI & STORE SETTINGS -->
+          <div id="tab-settings" class="admin-tab-content">
+            <div class="admin-settings-card">
+              <h3>Configurable UPI Payment Settings</h3>
+              <p>Update your official Innomentis UPI ID. Changes apply immediately to the checkout QR code and payment instructions.</p>
+
+              <form id="admin-settings-form">
+                <div class="form-row-2col">
+                  <label>
+                    <span>Innomentis UPI ID *</span>
+                    <input type="text" id="setting_upi_id" placeholder="e.g. innomentis@upi" required />
+                  </label>
+                  <label>
+                    <span>Account / Receiver Name</span>
+                    <input type="text" id="setting_upi_name" placeholder="e.g. Innomentis Robotics" required />
+                  </label>
+                </div>
+
+                <button type="submit" class="btn primary" style="margin-top: 1rem;">
+                  Save Settings
+                </button>
+              </form>
+            </div>
+
+            <!-- Central Cloud Database Setup Block -->
+            <div class="admin-settings-card" style="margin-top: 2rem; background: var(--light-blue); border-color: rgba(0, 102, 179, 0.2);">
+              <h3 style="color: var(--navy);">🌐 Central Live Database Configuration</h3>
+              <p style="color: var(--text-main); margin-bottom: 1rem;">
+                Currently running on <strong>LocalStorage Engine (Browser Sync)</strong>. For a production deployment with multiple live customers across India, connect your free <strong>Supabase</strong> cloud database so all orders land in a central dashboard.
+              </p>
+              
+              <div style="background: white; padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid rgba(226, 232, 240, 0.9);">
+                <h5 style="margin-bottom: 0.5rem; color: var(--navy);">Quick 2-Minute Supabase Setup:</h5>
+                <ol style="margin-left: 1.25rem; font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+                  <li>Create a free account at <strong>supabase.com</strong> and create a new project named <code>innomentis-store</code>.</li>
+                  <li>Copy your <strong>Project URL</strong> and <strong>anon API Key</strong> from Settings &rsaquo; API.</li>
+                  <li>Add them to <code>js/store-db.js</code> (lines 10-15) or set <code>window.SUPABASE_URL</code> in your site.</li>
+                  <li>All orders from any phone or computer across India will automatically sync to your central Admin dashboard!</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+
+    </div>
+
+    <!-- Modal Container for Order Details -->
+    <div id="admin-order-modal-container"></div>
+
+  </div>
+
+  <script src="js/products-data.js" defer></script>
+  <script src="js/store-db.js" defer></script>
+  <script src="js/store-admin.js" defer></script>
+</body>
+</html>

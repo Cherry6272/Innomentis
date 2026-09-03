@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0066b3" />
+  <title>Checkout &amp; UPI Payment Verification — Innomentis Store</title>
+  <meta name="description" content="Complete your student details and submit UPI payment transaction details for Innomentis Robotics Store order verification." />
+  <link rel="icon" href="images/in.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Top Utility Bar -->
+  <header class="top-bar">
+    <div class="container">
+      <div class="top-info">
+        <div class="top-info-item">
+          <span>🕒 MON – SAT | 9:00 AM to 6:00 PM</span>
+        </div>
+        <div class="top-info-item">
+          <span>📍 Head Office: Yelahanka, Bengaluru | Branch: Meerut, UP</span>
+        </div>
+      </div>
+      <div class="top-socials">
+        <a href="tel:+919148206667">📞 +91 91482 06667</a>
+        <a href="mailto:contact@innomentis.in">✉️ contact@innomentis.in</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Sticky Navigation -->
+  <nav class="main-nav">
+    <div class="container nav-grid">
+      <a href="index.html" class="brand" aria-label="Innomentis Home">
+        <img src="images/in_logo.png" alt="Innomentis Logo" width="150" height="52" />
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="courses.html">Courses &amp; Pathways</a></li>
+        <li><a href="store.html" class="active nav-store-link">Robotics Store</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="store.html" class="btn secondary">← Back to Store</a>
+      </div>
+    </div>
+  </nav>
+
+  <main style="padding: 3.5rem 0 6rem 0; background: var(--bg-page);">
+    <div class="container">
+      
+      <div class="section-header" style="text-align: center; max-width: 760px; margin: 0 auto 3rem auto;">
+        <div class="eyebrow">Direct UPI Verification Checkout</div>
+        <h2>Complete Your Robotics Order</h2>
+        <p>Enter your student and shipping details, complete the UPI payment using the provided QR/UPI ID, and submit your UTR number for verification.</p>
+      </div>
+
+      <form id="checkout-form" class="checkout-grid-layout">
+        
+        <!-- LEFT COLUMN: Customer & Shipping Information -->
+        <div class="checkout-form-column">
+          
+          <div class="checkout-card-box">
+            <h3 class="box-title">
+              <span class="step-num">1</span> Student / Customer Information
+            </h3>
+
+            <div class="form-row-2col">
+              <label>
+                <span>Student Full Name *</span>
+                <input type="text" id="customer_name" placeholder="e.g. Aarav Sharma" required />
+              </label>
+              <label>
+                <span>Parent / Guardian Name *</span>
+                <input type="text" id="guardian_name" placeholder="e.g. Rajesh Sharma" required />
+              </label>
+            </div>
+
+            <div class="form-row-2col">
+              <label>
+                <span>Email Address *</span>
+                <input type="email" id="email" placeholder="name@example.com" required />
+              </label>
+              <label>
+                <span>Mobile / WhatsApp Number *</span>
+                <input type="tel" id="phone" placeholder="+91 98765 43210" required />
+              </label>
+            </div>
+
+            <label style="margin-top: 1rem;">
+              <span>School / College Name *</span>
+              <input type="text" id="school" placeholder="e.g. National Public School, Bengaluru" required />
+            </label>
+          </div>
+
+          <div class="checkout-card-box" style="margin-top: 2rem;">
+            <h3 class="box-title">
+              <span class="step-num">2</span> Delivery Address
+            </h3>
+
+            <label>
+              <span>Street Address / House No / Apartment *</span>
+              <input type="text" id="address" placeholder="House No 15, Mittaganahalli Main Road" required />
+            </label>
+
+            <div class="form-row-3col">
+              <label>
+                <span>City / District *</span>
+                <input type="text" id="city" placeholder="Bengaluru" required />
+              </label>
+              <label>
+                <span>State *</span>
+                <input type="text" id="state" placeholder="Karnataka" required />
+              </label>
+              <label>
+                <span>Pincode *</span>
+                <input type="text" id="pincode" placeholder="560064" required />
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Order Summary & Manual UPI Payment -->
+        <div class="checkout-summary-column">
+          
+          <!-- Order Summary Card -->
+          <div class="checkout-card-box">
+            <h3 class="box-title">Order Summary</h3>
+
+            <div class="checkout-items-wrapper" id="checkout-items-list">
+              <!-- Dynamically populated by JS -->
+            </div>
+
+            <div class="checkout-totals-block">
+              <div class="total-row">
+                <span>Subtotal</span>
+                <span id="checkout-subtotal-val">₹0</span>
+              </div>
+              <div class="total-row">
+                <span>Shipping Fee</span>
+                <span style="color: #16a34a; font-weight: 600;">FREE (Standard Ground)</span>
+              </div>
+              <div class="total-row grand-total">
+                <span>Total Payable Amount</span>
+                <span id="checkout-total-val" class="highlight-total">₹0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Manual Payment Instruction Box -->
+          <div class="checkout-card-box payment-card-box" style="margin-top: 2rem;">
+            <h3 class="box-title">
+              <span class="step-num">3</span> Complete Your Payment
+            </h3>
+
+            <p class="payment-instruction-text">
+              Please complete the payment using the UPI details below and submit your transaction details for verification.
+            </p>
+
+            <!-- Configurable UPI ID Box -->
+            <div class="upi-details-card">
+              <div class="upi-id-header">
+                <span>Innomentis Official UPI ID:</span>
+                <button type="button" class="btn-copy-upi" id="copy-upi-btn">Copy UPI ID</button>
+              </div>
+              <div class="upi-id-value" id="upi-id-display">innomentis@upi</div>
+            </div>
+
+            <!-- Dynamic QR Code Container -->
+            <div id="upi-qr-container" class="qr-display-container">
+              <!-- Rendered dynamically by JS -->
+            </div>
+
+            <!-- Transaction Details Inputs -->
+            <div class="payment-verification-inputs">
+              <label>
+                <span>Transaction ID / UTR Number *</span>
+                <input type="text" id="transaction_id" placeholder="e.g. UTR123456789012" required />
+                <small>Enter the 12-digit UTR or Transaction Ref number from GPay/PhonePe/Paytm/Bank.</small>
+              </label>
+
+              <label style="margin-top: 1.25rem;">
+                <span>Upload Payment Screenshot (Optional)</span>
+                <input type="file" id="payment_screenshot" accept="image/*" />
+                <small>Upload a clear screenshot of your payment success screen (Max 5MB).</small>
+              </label>
+
+              <div id="screenshot-preview"></div>
+            </div>
+
+            <div class="verification-notice-banner">
+              <span class="info-icon">ℹ️</span>
+              <p>Your order will be confirmed after payment verification by the Innomentis team. You will receive an email confirmation once verified.</p>
+            </div>
+
+            <button type="submit" class="btn primary btn-submit-order" id="submit-order-btn">
+              Submit Order for Verification →
+            </button>
+          </div>
+
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- SITE FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-bottom" style="border: none;">
+      <p>© 2025 Innomentis Robotics School. All Rights Reserved.</p>
+      <div><a href="store.html">Back to Store</a></div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="script.js" defer></script>
+  <script src="js/products-data.js" defer></script>
+  <script src="js/store-db.js" defer></script>
+  <script src="js/store-cart.js" defer></script>
+  <script src="js/store-checkout.js" defer></script>
+</body>
+</html>

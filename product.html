@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0066b3" />
+  <title>Product Details — Innomentis Robotics Store</title>
+  <meta name="description" content="View detailed technical specifications, educational benefits, and package contents at Innomentis Robotics Store." />
+  <link rel="icon" href="images/in.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Top Utility Bar -->
+  <header class="top-bar">
+    <div class="container">
+      <div class="top-info">
+        <div class="top-info-item">
+          <span>🕒 MON – SAT | 9:00 AM to 6:00 PM</span>
+        </div>
+        <div class="top-info-item">
+          <span>📍 Head Office: Yelahanka, Bengaluru | Branch: Meerut, UP</span>
+        </div>
+      </div>
+      <div class="top-socials">
+        <a href="tel:+919148206667">📞 +91 91482 06667</a>
+        <a href="mailto:contact@innomentis.in">✉️ contact@innomentis.in</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Sticky Navigation -->
+  <nav class="main-nav">
+    <div class="container nav-grid">
+      <a href="index.html" class="brand" aria-label="Innomentis Home">
+        <img src="images/in_logo.png" alt="Innomentis Logo" width="150" height="52" />
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="courses.html">Courses &amp; Pathways</a></li>
+        <li><a href="store.html" class="active nav-store-link">Robotics Store</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="btn header-cart-btn" type="button" onclick="window.StoreCart &amp;&amp; window.StoreCart.openCartDrawer()">
+          🛒 Cart <span class="cart-count-badge">0</span>
+        </button>
+        <button class="nav-toggle" type="button" aria-label="Toggle Navigation Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main style="padding: 3rem 0 5rem 0; background: var(--bg-page);">
+    <div class="container">
+      
+      <!-- Breadcrumb Navigation -->
+      <nav class="store-breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a> &rsaquo;
+        <a href="store.html">Robotics Store</a> &rsaquo;
+        <span id="breadcrumb-category">Category</span> &rsaquo;
+        <span id="breadcrumb-title" class="current">Product Title</span>
+      </nav>
+
+      <!-- Main Product Display Card -->
+      <div class="product-detail-wrapper" id="product-detail-container">
+        <!-- Rendered dynamically by JavaScript -->
+        <div class="loading-spinner">Loading product information...</div>
+      </div>
+
+      <!-- Related Recommended Products Section -->
+      <section style="margin-top: 5rem;" id="related-products-section">
+        <div class="section-header" style="margin-bottom: 2rem;">
+          <div class="eyebrow">Expand Your Robotics Lab</div>
+          <h2>Recommended Accessories &amp; Related Components</h2>
+        </div>
+
+        <div class="products-grid" id="related-products-grid">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- SITE FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="images/in_logo.png" alt="Innomentis Logo" width="160" />
+        <p>
+          Experiential STEM and robotics education enabling the next generation to innovate, build, and lead through technology.
+        </p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Our Offices</h4>
+        <div class="office-info">
+          <h5>Head Office (Bengaluru)</h5>
+          <p>No 15/3, Mittaganahalli Main Road, Yelahanka 560064</p>
+        </div>
+        <div class="office-info">
+          <h5>Branch Office (Meerut)</h5>
+          <p>No. 12, Kaveri Complex, Begumpul, Meerut - 250001</p>
+        </div>
+      </div>
+
+      <div class="footer-column">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="store.html">Robotics Store</a></li>
+          <li><a href="checkout.html">Checkout</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Support</h4>
+        <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">
+          Need help choosing the right robotics kit for your child or school? Reach out to our STEM counsellors.
+        </p>
+        <a href="tel:+919148206667" class="btn secondary" style="margin-top: 1rem; display: inline-block;">📞 Call STEM Advisor</a>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© 2025 Innomentis Robotics School. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="script.js" defer></script>
+  <script src="js/products-data.js" defer></script>
+  <script src="js/store-db.js" defer></script>
+  <script src="js/store-cart.js" defer></script>
+
+  <script>
+    let selectedQuantity = 1;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      const productId = params.get("id") || "beginner-robotics-kit";
+
+      renderProductDetails(productId);
+    });
+
+    function renderProductDetails(id) {
+      const container = document.getElementById("product-detail-container");
+      const product = window.StoreDB.getProductById(id) || window.StoreDB.getAllProducts()[0];
+
+      if (!product) {
+        container.innerHTML = `<h3>Product not found. <a href="store.html">Return to Store</a></h3>`;
+        return;
+      }
+
+      // Update document title and breadcrumbs
+      document.title = `${product.name} — Innomentis Store`;
+      document.getElementById("breadcrumb-category").textContent = product.category;
+      document.getElementById("breadcrumb-title").textContent = product.name;
+
+      const isOutOfStock = product.availability === "Out of Stock";
+      const stockBadgeClass = product.availability === "In Stock" ? "stock-in" : (product.availability === "Low Stock" ? "stock-low" : "stock-out");
+
+      // Generate Specs Table HTML
+      let specsHtml = "";
+      if (product.specifications) {
+        specsHtml = Object.entries(product.specifications).map(([key, val]) => `
+          <tr>
+            <th>${key}</th>
+            <td>${val}</td>
+          </tr>
+        `).join("");
+      }
+
+      // Generate Included Items HTML
+      let includedHtml = "";
+      if (product.whats_included && product.whats_included.length > 0) {
+        includedHtml = product.whats_included.map(item => `<li><span class="check-icon">✓</span> ${item}</li>`).join("");
+      }
+
+      // Generate Ideal For HTML
+      let idealForHtml = "";
+      if (product.ideal_for && product.ideal_for.length > 0) {
+        idealForHtml = product.ideal_for.map(item => `<li><span class="star-icon">⭐</span> ${item}</li>`).join("");
+      }
+
+      container.innerHTML = `
+        <div class="product-detail-layout">
+          
+          <!-- LEFT: Product Gallery -->
+          <div class="detail-gallery-column">
+            <div class="main-image-card">
+              <img src="${product.image}" alt="${product.name}" id="main-product-img" />
+              <span class="product-stock-badge ${stockBadgeClass}">${product.availability}</span>
+            </div>
+            <div class="gallery-thumbs">
+              <img src="${product.image}" class="thumb active" onclick="switchImage('${product.image}')" />
+              <img src="images/1.jpg" class="thumb" onclick="switchImage('images/1.jpg')" />
+              <img src="images/HOME 1.jpg" class="thumb" onclick="switchImage('images/HOME 1.jpg')" />
+            </div>
+          </div>
+
+          <!-- RIGHT: Info & Actions -->
+          <div class="detail-info-column">
+            <div class="detail-category-badge">${product.category}</div>
+            <h1 class="detail-title">${product.name}</h1>
+            <div class="detail-sku-row">
+              <span>SKU: <code>${product.sku}</code></span>
+              <span>•</span>
+              <span class="stock-status-text">${product.availability}</span>
+            </div>
+
+            <div class="detail-price-box">
+              <span class="price-currency">₹</span><span class="price-amount">${product.price.toLocaleString('en-IN')}</span>
+              <span class="tax-tag">(Taxes Included • Pan-India Delivery)</span>
+            </div>
+
+            <p class="detail-short-desc">${product.short_description}</p>
+
+            <div class="detail-purchase-row">
+              <div class="qty-picker">
+                <label>Qty:</label>
+                <div class="qty-input-group">
+                  <button type="button" onclick="changeQty(-1)">-</button>
+                  <span id="qty-val">1</span>
+                  <button type="button" onclick="changeQty(1)">+</button>
+                </div>
+              </div>
+
+              <button type="button" 
+                      class="btn primary btn-xl-add-cart ${isOutOfStock ? 'disabled' : ''}" 
+                      ${isOutOfStock ? 'disabled' : ''}
+                      onclick="addToCartWithQty('${product.id}')">
+                🛒 ${isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+              </button>
+            </div>
+
+            <div class="detail-trust-pills">
+              <div class="pill-item">🔒 Manual UPI Verification</div>
+              <div class="pill-item">📦 Protective Hardware Box</div>
+              <div class="pill-item">🎓 Educational STEM Support</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- LOWER SECTION: Tabs / Full Specs -->
+        <div class="product-tabs-wrapper" style="margin-top: 4rem;">
+          <div class="tabs-header">
+            <button class="tab-btn active" onclick="switchTab('tab-about')">About the Product</button>
+            <button class="tab-btn" onclick="switchTab('tab-specs')">Specifications</button>
+            <button class="tab-btn" onclick="switchTab('tab-included')">What's Included</button>
+            <button class="tab-btn" onclick="switchTab('tab-educational')">Educational Value</button>
+          </div>
+
+          <div class="tabs-content-body">
+            
+            <div id="tab-about" class="tab-pane active">
+              <h3>Detailed Overview</h3>
+              <p>${product.detailed_description || product.short_description}</p>
+              ${product.compatibility ? `<p style="margin-top:1rem;"><strong>Compatibility:</strong> ${product.compatibility}</p>` : ''}
+            </div>
+
+            <div id="tab-specs" class="tab-pane">
+              <h3>Technical Specifications</h3>
+              <table class="specs-table">
+                <tbody>
+                  ${specsHtml || '<tr><td colspan="2">Standard electronics specifications apply.</td></tr>'}
+                </tbody>
+              </table>
+            </div>
+
+            <div id="tab-included" class="tab-pane">
+              <h3>Package Contents (What's in the Box)</h3>
+              <ul class="included-list">
+                ${includedHtml || '<li>1x Product Unit</li>'}
+              </ul>
+            </div>
+
+            <div id="tab-educational" class="tab-pane">
+              <h3>Ideal For &amp; Learning Outcomes</h3>
+              <ul class="ideal-for-list">
+                ${idealForHtml || '<li>Suitable for STEM robotics experimentation and student projects.</li>'}
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      `;
+
+      renderRelatedProducts(product.category, product.id);
+    }
+
+    function switchImage(src) {
+      document.getElementById("main-product-img").src = src;
+      document.querySelectorAll(".thumb").forEach(t => t.classList.remove("active"));
+      event.target.classList.add("active");
+    }
+
+    function changeQty(delta) {
+      selectedQuantity = Math.max(1, selectedQuantity + delta);
+      document.getElementById("qty-val").textContent = selectedQuantity;
+    }
+
+    function addToCartWithQty(productId) {
+      if (window.StoreCart) {
+        window.StoreCart.addItem(productId, selectedQuantity);
+      }
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(".tab-pane").forEach(pane => pane.classList.remove("active"));
+
+      event.target.classList.add("active");
+      document.getElementById(tabId).classList.add("active");
+    }
+
+    function renderRelatedProducts(category, currentId) {
+      const container = document.getElementById("related-products-grid");
+      if (!container) return;
+
+      const related = window.StoreDB.getAllProducts()
+        .filter(p => p.category === category && p.id !== currentId)
+        .slice(0, 4);
+
+      if (related.length === 0) {
+        document.getElementById("related-products-section").style.display = "none";
+        return;
+      }
+
+      container.innerHTML = related.map(p => `
+        <article class="product-card">
+          <div class="product-card-image-wrap">
+            <img src="${p.image}" alt="${p.name}" class="product-card-img" />
+          </div>
+          <div class="product-card-content">
+            <div class="product-card-category">${p.category}</div>
+            <h3 class="product-card-title"><a href="product.html?id=${p.slug}">${p.name}</a></h3>
+            <div class="product-card-footer">
+              <div class="product-price">₹${p.price.toLocaleString('en-IN')}</div>
+              <a href="product.html?id=${p.slug}" class="btn-product-details">View Details</a>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+  </script>
+</body>
+</html>
