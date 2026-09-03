@@ -141,9 +141,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ==========================================================================
-     5. FORM SUBMISSION WITH WHATSAPP INTEGRATION & FEEDBACK
+     5. LEAD & DEMO FORM SUBMISSION (EXCLUDES STORE CHECKOUT)
      ========================================================================== */
-  document.querySelectorAll("form").forEach((form) => {
+  document.querySelectorAll("form.lead-form, form.enquiry-form, form.contact-form").forEach((form) => {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
 
