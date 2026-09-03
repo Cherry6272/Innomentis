@@ -219,6 +219,14 @@
     }
 
     /**
+     * Get Order by ID
+     */
+    getOrderById(orderId) {
+      const orders = this.getAllOrders();
+      return orders.find((o) => o.order_id && String(o.order_id).toLowerCase() === String(orderId).toLowerCase()) || null;
+    }
+
+    /**
      * Fetch Live Orders from Supabase Cloud DB
      */
     async fetchLiveOrdersFromSupabase() {
@@ -236,8 +244,16 @@
           if (res.ok) {
             const liveOrders = await res.json();
             if (Array.isArray(liveOrders) && liveOrders.length > 0) {
-              localStorage.setItem(LOCAL_STORAGE_ORDERS_KEY, JSON.stringify(liveOrders));
-              return liveOrders;
+              const localOrders = this.getAllOrders();
+              const merged = liveOrders.map((remote) => {
+                const local = localOrders.find((l) => l && l.order_id === remote.order_id);
+                if (local && local.updated_at && new Date(local.updated_at) > new Date(remote.updated_at || remote.created_at)) {
+                  return local;
+                }
+                return remote;
+              });
+              localStorage.setItem(LOCAL_STORAGE_ORDERS_KEY, JSON.stringify(merged));
+              return merged;
             }
           }
         } catch (err) {
@@ -250,9 +266,9 @@
     /**
      * Update Order Status (Admin action)
      */
-    updateOrderStatus(orderId, paymentStatus, orderStatus, rejectionReason = "") {
+    async updateOrderStatus(orderId, paymentStatus, orderStatus, rejectionReason = "") {
       const orders = this.getAllOrders();
-      const index = orders.findIndex((o) => o.order_id.toLowerCase() === orderId.toLowerCase());
+      const index = orders.findIndex((o) => o && o.order_id && String(o.order_id).toLowerCase() === String(orderId).toLowerCase());
 
       if (index !== -1) {
         orders[index].payment_status = paymentStatus;
@@ -264,8 +280,8 @@
 
         localStorage.setItem(LOCAL_STORAGE_ORDERS_KEY, JSON.stringify(orders));
 
-        // Sync update to Supabase
-        this.updateOrderStatusSupabase(orderId, paymentStatus, orderStatus, rejectionReason);
+        // Sync update to Supabase (Awaited to ensure Cloud DB updates before dashboard re-renders)
+        await this.updateOrderStatusSupabase(orderId, paymentStatus, orderStatus, rejectionReason);
 
         // If Payment Verified, simulate trigger confirmation email
         if (paymentStatus === "Payment Verified" || orderStatus === "Order Confirmed") {

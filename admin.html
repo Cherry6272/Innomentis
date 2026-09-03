@@ -13,7 +13,7 @@
 <body class="admin-body">
 
   <div id="admin-dashboard-app">
-    
+
     <!-- PASSCODE AUTHENTICATION OVERLAY -->
     <div id="admin-login-overlay" class="admin-login-overlay">
       <div class="admin-login-card">
@@ -26,9 +26,10 @@
         <form id="admin-login-form">
           <label>
             <span>Admin Passcode</span>
-            <input type="password" id="admin_passcode" placeholder="Enter Passcode (Default: innomentis2025)" required autofocus />
+            <input type="password" id="admin_passcode" placeholder="Enter Passcode (Default: innomentis2025)" required
+              autofocus />
           </label>
-          
+
           <div id="login-error-msg" class="login-error" style="display: none;"></div>
 
           <button type="submit" class="btn primary" style="width: 100%; margin-top: 1rem;">
@@ -40,7 +41,7 @@
 
     <!-- MAIN ADMIN DASHBOARD CONTENT -->
     <div id="admin-main-content" style="display: none;">
-      
+
       <!-- Top Admin Header Bar -->
       <header class="admin-top-bar">
         <div class="container admin-header-grid">
@@ -58,7 +59,7 @@
 
       <main class="admin-main-wrapper">
         <div class="container">
-          
+
           <!-- Stat Counters Row -->
           <div class="admin-stats-grid">
             <div class="stat-card">
@@ -103,10 +104,11 @@
 
           <!-- TAB 1: ORDERS & VERIFICATIONS -->
           <div id="tab-orders" class="admin-tab-content active">
-            
+
             <div class="table-controls-bar">
               <div class="search-box">
-                <input type="text" id="admin-order-search" placeholder="Search Order ID, Customer, UTR number, Email..." />
+                <input type="text" id="admin-order-search"
+                  placeholder="Search Order ID, Customer, UTR number, Email..." />
               </div>
 
               <div class="filter-box">
@@ -169,7 +171,8 @@
           <div id="tab-settings" class="admin-tab-content">
             <div class="admin-settings-card">
               <h3>Configurable UPI Payment Settings</h3>
-              <p>Update your official Innomentis UPI ID. Changes apply immediately to the checkout QR code and payment instructions.</p>
+              <p>Update your official Innomentis UPI ID. Changes apply immediately to the checkout QR code and payment
+                instructions.</p>
 
               <form id="admin-settings-form">
                 <div class="form-row-2col">
@@ -189,23 +192,6 @@
               </form>
             </div>
 
-            <!-- Central Cloud Database Setup Block -->
-            <div class="admin-settings-card" style="margin-top: 2rem; background: var(--light-blue); border-color: rgba(0, 102, 179, 0.2);">
-              <h3 style="color: var(--navy);">🌐 Central Live Database Configuration</h3>
-              <p style="color: var(--text-main); margin-bottom: 1rem;">
-                Currently running on <strong>LocalStorage Engine (Browser Sync)</strong>. For a production deployment with multiple live customers across India, connect your free <strong>Supabase</strong> cloud database so all orders land in a central dashboard.
-              </p>
-              
-              <div style="background: white; padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid rgba(226, 232, 240, 0.9);">
-                <h5 style="margin-bottom: 0.5rem; color: var(--navy);">Quick 2-Minute Supabase Setup:</h5>
-                <ol style="margin-left: 1.25rem; font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
-                  <li>Create a free account at <strong>supabase.com</strong> and create a new project named <code>innomentis-store</code>.</li>
-                  <li>Copy your <strong>Project URL</strong> and <strong>anon API Key</strong> from Settings &rsaquo; API.</li>
-                  <li>Add them to <code>js/store-db.js</code> (lines 10-15) or set <code>window.SUPABASE_URL</code> in your site.</li>
-                  <li>All orders from any phone or computer across India will automatically sync to your central Admin dashboard!</li>
-                </ol>
-              </div>
-            </div>
           </div>
 
         </div>
@@ -222,4 +208,5 @@
   <script src="js/store-db.js" defer></script>
   <script src="js/store-admin.js" defer></script>
 </body>
+
 </html>

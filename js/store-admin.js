@@ -300,31 +300,32 @@
       if (modalContainer) modalContainer.innerHTML = "";
     }
 
-    verifyPayment(orderId) {
+    async verifyPayment(orderId) {
       if (confirm(`Confirm verification of payment for Order #${orderId}? This will trigger confirmation email to the customer.`)) {
-        window.StoreDB.updateOrderStatus(orderId, "Payment Verified", "Order Confirmed");
-        alert(`✓ Payment verified! Order #${orderId} is now confirmed.`);
+        const updatedOrder = await window.StoreDB.updateOrderStatus(orderId, "Payment Verified", "Order Confirmed");
+        const recipientEmail = updatedOrder ? updatedOrder.email : "customer";
+        alert(`✓ Payment verified! Order #${orderId} is confirmed.\n\n📧 Confirmation email triggered to: ${recipientEmail}`);
         this.closeModal();
-        this.renderDashboard();
+        await this.renderDashboard();
       }
     }
 
-    rejectPayment(orderId) {
+    async rejectPayment(orderId) {
       const reason = prompt("Enter reason for payment rejection (e.g. Invalid UTR number / Amount mismatch):");
       if (reason !== null) {
-        window.StoreDB.updateOrderStatus(orderId, "Rejected", "Payment Rejected", reason);
+        await window.StoreDB.updateOrderStatus(orderId, "Rejected", "Payment Rejected", reason);
         alert(`Order #${orderId} payment marked as Rejected.`);
         this.closeModal();
-        this.renderDashboard();
+        await this.renderDashboard();
       }
     }
 
-    updateLifecycleStatus(orderId, newStatus) {
+    async updateLifecycleStatus(orderId, newStatus) {
       const paymentStatus = newStatus === "Order Confirmed" || newStatus === "Processing" || newStatus === "Shipped" || newStatus === "Delivered" ? "Payment Verified" : "Payment Verification Pending";
-      window.StoreDB.updateOrderStatus(orderId, paymentStatus, newStatus);
-      alert(`Order #${orderId} status updated to: ${newStatus}`);
+      await window.StoreDB.updateOrderStatus(orderId, paymentStatus, newStatus);
+      alert(`✓ Order #${orderId} status updated to: ${newStatus}`);
       this.closeModal();
-      this.renderDashboard();
+      await this.renderDashboard();
     }
 
     renderSettingsForm() {
