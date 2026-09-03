@@ -805,6 +805,27 @@
     </div>
   </footer>
 
+  <!-- Sticky App-Like Bottom Mobile Navigation Bar -->
+  <div class="mobile-bottom-nav">
+    <a href="index.html" class="mobile-nav-item active">
+      <span class="nav-icon">🏠</span>
+      <span>Home</span>
+    </a>
+    <a href="store.html" class="mobile-nav-item">
+      <span class="nav-icon">🤖</span>
+      <span>Store</span>
+    </a>
+    <button type="button" class="mobile-nav-item" onclick="window.StoreCart &amp;&amp; window.StoreCart.openCartDrawer()">
+      <span class="nav-icon">🛒</span>
+      <span>Cart</span>
+      <span class="cart-count-badge mobile-badge">0</span>
+    </button>
+    <button type="button" class="mobile-nav-item" data-modal-target="#lead-modal">
+      <span class="nav-icon">⭐</span>
+      <span>Demo</span>
+    </button>
+  </div>
+
   <script src="script.js" defer></script>
   <script src="js/products-data.js" defer></script>
   <script src="js/store-db.js" defer></script>
