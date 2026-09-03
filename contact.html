@@ -93,7 +93,7 @@
 
     <!-- CONTACT FORM & OFFICES GRID -->
     <section style="padding: 5rem 0; background: var(--bg-surface);">
-      <div class="container contact-page-grid">
+      <div class="container" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem;">
         
         <!-- CONTACT FORM -->
         <div class="schools-card-box">
@@ -102,7 +102,7 @@
           <p style="margin-bottom: 2rem;">Fill in your details below and our team will get back to you within 24 hours.</p>
 
           <form class="lead-form">
-            <div class="form-row-2col">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
               <label>
                 <span>First Name *</span>
                 <input type="text" placeholder="First Name" required />
@@ -113,7 +113,7 @@
               </label>
             </div>
 
-            <div class="form-row-2col">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
               <label>
                 <span>Email Address *</span>
                 <input type="email" placeholder="name@example.com" required />
@@ -124,7 +124,7 @@
               </label>
             </div>
 
-            <div class="form-row-2col">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
               <label>
                 <span>I am a... *</span>
                 <select required>

@@ -1311,131 +1311,6 @@ ul, ol {
 }
 
 /* ==========================================================================
-   LEADERSHIP MESSAGES SECTION
-   ========================================================================== */
-
-.leadership-section {
-  padding: 5.5rem 0;
-  background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-page) 100%);
-  position: relative;
-}
-
-.leadership-header {
-  text-align: center;
-  max-width: 720px;
-  margin: 0 auto 3rem auto;
-}
-
-.leadership-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  margin-top: 2.5rem;
-}
-
-.leadership-card {
-  background: var(--bg-surface);
-  border-radius: var(--radius-xl);
-  padding: 3rem 2.5rem;
-  box-shadow: var(--shadow-md);
-  border: 1px solid rgba(0, 102, 179, 0.12);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: all var(--transition-smooth);
-}
-
-.leadership-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-hover);
-  border-color: rgba(0, 102, 179, 0.25);
-}
-
-.leadership-card .quote-icon-badge {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.6rem;
-  font-family: Georgia, serif;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-  flex-shrink: 0;
-}
-
-.leadership-card--director .quote-icon-badge {
-  background: var(--light-blue);
-  color: var(--blue);
-}
-
-.leadership-card--ceo .quote-icon-badge {
-  background: rgba(248, 213, 72, 0.2);
-  color: #946800;
-}
-
-.leadership-card h3 {
-  font-size: 1.6rem;
-  color: var(--navy);
-  margin-bottom: 1rem;
-}
-
-.leadership-card blockquote {
-  font-size: 1.05rem;
-  line-height: 1.75;
-  color: var(--text-main);
-  font-style: italic;
-  margin-bottom: 2rem;
-  position: relative;
-}
-
-.leader-profile {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  border-top: 1px solid rgba(226, 232, 240, 0.8);
-  padding-top: 1.5rem;
-}
-
-.leader-avatar {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 1.1rem;
-  flex-shrink: 0;
-  color: white;
-}
-
-.leadership-card--director .leader-avatar {
-  background: var(--gradient-primary);
-  box-shadow: 0 4px 14px rgba(0, 102, 179, 0.25);
-}
-
-.leadership-card--ceo .leader-avatar {
-  background: var(--gradient-yellow);
-  color: var(--navy-dark);
-  box-shadow: 0 4px 14px rgba(248, 213, 72, 0.35);
-}
-
-.leader-info h4 {
-  font-size: 1.1rem;
-  color: var(--navy);
-  margin: 0 0 0.2rem 0;
-}
-
-.leader-info span {
-  font-size: 0.875rem;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-/* ==========================================================================
    SECTION 10: EVENTS / RTC FEST
    ========================================================================== */
 
@@ -1838,47 +1713,26 @@ ul, ol {
 }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN (MEDIA QUERIES FOR ALL DEVICES)
+   RESPONSIVE DESIGN (MEDIA QUERIES)
    ========================================================================== */
 
-/* Prevent any horizontal page overflow globally */
-html, body {
-  overflow-x: hidden !important;
-  width: 100%;
-}
-
-/* Tablet & Smaller Screens (1024px and below) */
 @media (max-width: 1024px) {
   .hero-grid,
   .intro-grid,
   .schools-grid,
   .program-editorial-card,
-  .program-editorial-card:nth-child(even),
-  .vision-mission-grid,
-  .leadership-grid,
-  .contact-page-grid {
-    grid-template-columns: 1fr !important;
-    gap: 2.5rem;
+  .program-editorial-card:nth-child(even) {
+    grid-template-columns: 1fr;
+    gap: 3rem;
   }
   
   .program-editorial-card:nth-child(even) .program-media {
     order: 0;
   }
 
-  .pricing-tiers-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 1.5rem;
-  }
-
-  .school-track-grid,
-  .courses-starter-grid {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 1.5rem;
-  }
-
   .journey-timeline {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .journey-timeline::before {
@@ -1902,176 +1756,51 @@ html, body {
   }
 }
 
-/* Mobile & Small Tablets (768px and below) */
 @media (max-width: 768px) {
+  .nav-links,
   .top-bar {
-    display: none !important;
-  }
-
-  .nav-links {
     display: none;
   }
 
   .nav-toggle {
-    display: flex !important;
+    display: flex;
   }
 
   .main-nav .nav-grid {
     position: relative;
-    height: 72px;
   }
 
   .nav-links.mobile-open {
-    display: flex !important;
+    display: flex;
     flex-direction: column;
     position: absolute;
-    top: 72px;
+    top: 80px;
     left: -4vw;
     right: -4vw;
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: 2rem 1.75rem;
+    background: var(--bg-surface);
+    padding: 2rem;
     box-shadow: var(--shadow-lg);
     border-bottom: 1px solid rgba(226, 232, 240, 0.9);
     gap: 1.25rem;
-    align-items: stretch;
-    z-index: 1001;
-  }
-
-  .nav-links.mobile-open a {
-    font-size: 1.1rem;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid rgba(226, 232, 240, 0.5);
-  }
-
-  .nav-links.mobile-open a::after {
-    display: none;
+    align-items: flex-start;
   }
 
   .hero {
     padding: 3.5rem 0 4.5rem 0;
   }
 
-  .hero--about {
-    padding: 4.5rem 0 5rem 0;
-  }
-
   .hero-float-badge {
-    display: none !important;
+    display: none;
   }
 
   .hero-robot-mascot {
-    width: 80px;
-    right: -5px;
-    top: -15px;
-  }
-
-  .hero-trust-badges {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .vision-mission-grid,
-  .leadership-grid,
-  .contact-page-grid,
-  .school-track-grid,
-  .courses-starter-grid,
-  .pricing-tiers-grid,
-  .online-pillars-grid,
-  .aiml-track-grid,
-  .parent-value-grid,
-  .gallery-grid,
-  .pillars-grid,
-  .journey-timeline,
-  .form-row-2col {
-    grid-template-columns: 1fr !important;
-    gap: 1.5rem !important;
-  }
-
-  .intro-stats-banner {
-    grid-template-columns: 1fr !important;
-    gap: 1.25rem;
-    padding: 1.5rem;
-  }
-
-  .intro-main-image img {
-    height: auto !important;
-    max-height: 320px;
-  }
-
-  .schools-card-box,
-  .value-card,
-  .pillar-card,
-  .program-editorial-card {
-    padding: 1.75rem !important;
-  }
-
-  .leadership-section {
-    padding: 3rem 0 !important;
-  }
-
-  .leadership-header {
-    margin-bottom: 1.25rem !important;
-  }
-
-  .leadership-grid {
-    margin-top: 1rem !important;
-    gap: 1.25rem !important;
-  }
-
-  .leadership-card {
-    padding: 1.35rem 1.25rem !important;
-    border-radius: var(--radius-lg) !important;
-  }
-
-  .leadership-card .quote-icon-badge {
-    width: 36px !important;
-    height: 36px !important;
-    font-size: 1.2rem !important;
-    margin-bottom: 0.6rem !important;
-  }
-
-  .leadership-card h3 {
-    font-size: 1.25rem !important;
-    margin-bottom: 0.4rem !important;
-  }
-
-  .leadership-card blockquote {
-    font-size: 0.925rem !important;
-    line-height: 1.55 !important;
-    margin-bottom: 1rem !important;
-  }
-
-  .leader-profile {
-    padding-top: 0.85rem !important;
-    gap: 0.75rem !important;
-  }
-
-  .leader-avatar {
-    width: 42px !important;
-    height: 42px !important;
-    font-size: 0.95rem !important;
-  }
-
-  .leader-info h4 {
-    font-size: 1rem !important;
-  }
-
-  .leader-info span {
-    font-size: 0.8rem !important;
-  }
-
-  .btn {
-    white-space: normal !important;
-    text-align: center;
-    word-break: break-word;
-    font-size: 0.95rem;
+    width: 90px;
+    right: -10px;
+    top: -20px;
   }
 
   .footer-grid {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
     gap: 2.5rem;
   }
 
@@ -2080,91 +1809,20 @@ html, body {
     gap: 1rem;
     text-align: center;
   }
-
-  .lead-modal__content,
-  .enquiry-modal__content {
-    padding: 1.5rem;
-    border-radius: var(--radius-lg);
-    width: 95vw;
-  }
 }
 
-/* Small Smart Phones (480px and below) */
 @media (max-width: 480px) {
-  .container {
-    width: 92vw !important;
-  }
-
-  h1 {
-    font-size: clamp(1.8rem, 7vw, 2.4rem) !important;
-  }
-
-  h2 {
-    font-size: clamp(1.5rem, 6vw, 2rem) !important;
-  }
-
-  .eyebrow {
-    font-size: 0.75rem;
-    padding: 0.35rem 0.8rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .hero-subtitle {
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-  }
-
   .hero-actions {
     flex-direction: column;
     align-items: stretch;
-    width: 100%;
-    gap: 0.85rem;
   }
-
-  .hero-actions .btn {
+  
+  .btn {
     width: 100%;
   }
 
   .tech-nodes-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .tech-display-info h3 {
-    font-size: 1.25rem;
-  }
-
-  .footer-newsletter {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .footer-newsletter input {
-    width: 100%;
-  }
-
-  .footer-newsletter button {
-    width: 100%;
-    border-radius: var(--radius-full);
-    height: 44px;
-  }
-
-  .schools-card-box,
-  .value-card,
-  .pillar-card {
-    padding: 1.25rem !important;
-  }
-}
-
-/* Extra Small Phones (360px and below) */
-@media (max-width: 360px) {
-  .brand img {
-    height: 40px;
-  }
-
-  .btn {
-    padding: 0.75rem 1.25rem;
-    font-size: 0.9rem;
+    grid-template-columns: 1fr;
   }
 }
 
