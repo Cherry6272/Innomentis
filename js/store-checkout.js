@@ -114,7 +114,7 @@
     }
 
     // 5. Handle Form Submission
-    checkoutForm.addEventListener("submit", (e) => {
+    checkoutForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const studentName = document.getElementById("customer_name")?.value.trim();
@@ -139,8 +139,8 @@
         submitBtn.textContent = "Submitting Order for Verification...";
       }
 
-      // Create Order in DB
-      const newOrder = window.StoreDB.createOrder({
+      // Create Order in DB & Await Cloud Sync
+      const newOrder = await window.StoreDB.createOrder({
         customer_name: studentName,
         guardian_name: guardianName,
         email: email,
@@ -162,9 +162,7 @@
       }
 
       // Direct Redirect to Order Confirmation Page
-      setTimeout(() => {
-        window.location.href = `order-confirmation.html?id=${newOrder.order_id}`;
-      }, 500);
+      window.location.href = `order-confirmation.html?id=${newOrder.order_id}`;
     });
   });
 })();

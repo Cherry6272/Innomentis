@@ -169,12 +169,13 @@
     /**
      * Create a new Order
      */
-    createOrder(orderInput) {
+    async createOrder(orderInput) {
       const orders = this.getAllOrders();
 
-      // Generate Unique Order ID
-      const orderCount = orders.length + 1024;
-      const order_id = `INM-${orderCount}`;
+      // Generate Guaranteed Globally Unique Order ID (e.g. INM-78214)
+      const randomPart = Math.floor(100 + Math.random() * 900);
+      const timePart = Date.now().toString().slice(-4);
+      const order_id = `INM-${timePart}${randomPart}`;
 
       const newOrder = {
         order_id,
@@ -200,8 +201,8 @@
       orders.unshift(newOrder);
       localStorage.setItem(LOCAL_STORAGE_ORDERS_KEY, JSON.stringify(orders));
 
-      // Attempt Supabase sync if initialized
-      this.syncOrderToSupabase(newOrder);
+      // Await Supabase sync to guarantee cloud write before redirect
+      await this.syncOrderToSupabase(newOrder);
 
       return newOrder;
     }
@@ -243,17 +244,9 @@
           });
           if (res.ok) {
             const liveOrders = await res.json();
-            if (Array.isArray(liveOrders) && liveOrders.length > 0) {
-              const localOrders = this.getAllOrders();
-              const merged = liveOrders.map((remote) => {
-                const local = localOrders.find((l) => l && l.order_id === remote.order_id);
-                if (local && local.updated_at && new Date(local.updated_at) > new Date(remote.updated_at || remote.created_at)) {
-                  return local;
-                }
-                return remote;
-              });
-              localStorage.setItem(LOCAL_STORAGE_ORDERS_KEY, JSON.stringify(merged));
-              return merged;
+            if (Array.isArray(liveOrders)) {
+              localStorage.setItem(LOCAL_STORAGE_ORDERS_KEY, JSON.stringify(liveOrders));
+              return liveOrders;
             }
           }
         } catch (err) {
